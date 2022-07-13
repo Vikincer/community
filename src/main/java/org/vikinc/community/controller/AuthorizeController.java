@@ -8,15 +8,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.vikinc.community.dto.AccessTokenDTO;
 import org.vikinc.community.dto.GithubUser;
+import org.vikinc.community.dto.User;
+import org.vikinc.community.mapper.UserMapper;
 import org.vikinc.community.provider.GithubProvider;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.UUID;
 
 @Controller
 public class AuthorizeController {
 
     @Autowired
     private GithubProvider githubProvider;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Value("${github.client.id}")
     private String clientID;
@@ -35,11 +41,19 @@ public class AuthorizeController {
         accessTokenDTO.setCode(code);
         accessTokenDTO.setRedirect_uri(redirectUri);
         String accessToken = githubProvider.getAccessToken(accessTokenDTO);
-        GithubUser user = githubProvider.getUser(accessToken);
-//        System.out.println(user.toString());
-        if(user != null){
+        GithubUser githubUser = githubProvider.getUser(accessToken);
+//        System.out.println(githubUser.toString());
+        if(githubUser != null){
             //登录成功
-            request.getSession().setAttribute("user",user);
+            User user = new User();
+            user.setAccountId(UUID.randomUUID().toString());
+            user.setName(githubUser.getLogin());
+            user.setToken(accessToken);
+            user.setGmtCreate(System.currentTimeMillis());
+            user.setGmtModified(user.getGmtCreate());
+            userMapper.insert(user);
+
+            request.getSession().setAttribute("user",githubUser);
             return "redirect:/";
         }else {
             //登录失败
