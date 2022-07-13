@@ -2,12 +2,15 @@ package org.vikinc.community.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.vikinc.community.dto.AccessTokenDTO;
 import org.vikinc.community.dto.GithubUser;
 import org.vikinc.community.provider.GithubProvider;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class AuthorizeController {
@@ -23,7 +26,8 @@ public class AuthorizeController {
     private String redirectUri;
 
     @GetMapping("/callback")
-    public String callback(@RequestParam(name="code") String code){
+    public String callback(@RequestParam(name="code") String code,
+                           HttpServletRequest request){
 
         AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
         accessTokenDTO.setClient_id(clientID);
@@ -32,8 +36,14 @@ public class AuthorizeController {
         accessTokenDTO.setRedirect_uri(redirectUri);
         String accessToken = githubProvider.getAccessToken(accessTokenDTO);
         GithubUser user = githubProvider.getUser(accessToken);
-        System.out.println(user.toString());
-
-        return "index";
+//        System.out.println(user.toString());
+        if(user != null){
+            //登录成功
+            request.getSession().setAttribute("user",user);
+            return "redirect:/";
+        }else {
+            //登录失败
+            return "redirect:/";
+        }
     }
 }
