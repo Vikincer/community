@@ -6,4 +6,6 @@ import org.vikinc.community.dto.User;
 @Mapper
 public interface UserMapper {
     void insert(User user);
+
+    User selectByToken(String token);
 }

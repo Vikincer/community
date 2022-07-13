@@ -12,7 +12,9 @@ import org.vikinc.community.dto.User;
 import org.vikinc.community.mapper.UserMapper;
 import org.vikinc.community.provider.GithubProvider;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
 @Controller
@@ -33,7 +35,8 @@ public class AuthorizeController {
 
     @GetMapping("/callback")
     public String callback(@RequestParam(name="code") String code,
-                           HttpServletRequest request){
+                           HttpServletRequest request,
+                           HttpServletResponse response){
 
         AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
         accessTokenDTO.setClient_id(clientID);
@@ -44,14 +47,19 @@ public class AuthorizeController {
         GithubUser githubUser = githubProvider.getUser(accessToken);
 //        System.out.println(githubUser.toString());
         if(githubUser != null){
-            //登录成功
+            //登录成功 创建token
+            String token = UUID.randomUUID().toString();
+
+            //创建User对象 写入数据库
             User user = new User();
-            user.setAccountId(UUID.randomUUID().toString());
+            user.setAccountId(githubUser.getId().toString());
             user.setName(githubUser.getLogin());
-            user.setToken(accessToken);
+            user.setToken(token);
             user.setGmtCreate(System.currentTimeMillis());
             user.setGmtModified(user.getGmtCreate());
             userMapper.insert(user);
+            //将token写入cookie 前端验证
+            response.addCookie(new Cookie("token",token));
 
             request.getSession().setAttribute("user",githubUser);
             return "redirect:/";

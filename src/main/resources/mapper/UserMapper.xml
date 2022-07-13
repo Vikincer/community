@@ -8,4 +8,8 @@
         INSERT INTO user (name,account_id,token,gmt_create,gmt_modified) value (#{name},#{accountId},#{token},#{gmtCreate},#{gmtModified})
     </insert>
 
+    <select id="selectByToken" parameterType="java.lang.String" resultType="org.vikinc.community.dto.User">
+        SELECT * FROM user WHERE token = #{token}
+    </select>
+
 </mapper>
