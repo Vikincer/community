@@ -44,17 +44,31 @@ public class PublishController {
             Model model
     ){
 
+        model.addAttribute("title",title);
+        model.addAttribute("description",description);
+        model.addAttribute("tag",tag);
+
+        if(title == "" || title == null){
+            model.addAttribute("error","标题不能为空");
+            return "/publish";
+        }
+        if(description == "" || title == description){
+            model.addAttribute("error","问题补充不能为空");
+            return "/publish";
+        }
         Cookie[] cookies = request.getCookies();
         User user = null;
-        for (Cookie cookie : cookies){
-            if(cookie.getName().equals("token")){
-                String token = cookie.getValue();
-                user = userMapper.selectByToken(token);
-                if(user!= null )
-                    request.getSession().setAttribute("user",user);
-                break;
+        if(cookies != null && cookies.length != 0)
+            for (Cookie cookie : cookies){
+                if(cookie.getName().equals("token")){
+                    String token = cookie.getValue();
+                    user = userMapper.selectByToken(token);
+                    if(user != null )
+                        request.getSession().setAttribute("user",user);
+                    break;
+                }
             }
-        }
+
         if(user == null ){
            model.addAttribute("error","用户未登录");
         }else{

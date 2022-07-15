@@ -5,7 +5,7 @@
 <mapper namespace="org.vikinc.community.mapper.UserMapper">
 
     <insert id="insert" parameterType="org.vikinc.community.dto.User">
-        INSERT INTO user (name,account_id,token,gmt_create,gmt_modified) value (#{name},#{accountId},#{token},#{gmtCreate},#{gmtModified})
+        INSERT INTO user (name,account_id,token,gmt_create,gmt_modified,avatar_url) value (#{name},#{accountId},#{token},#{gmtCreate},#{gmtModified},#{avatarUrl})
     </insert>
 
     <select id="selectByToken" parameterType="java.lang.String" resultType="org.vikinc.community.dto.User">

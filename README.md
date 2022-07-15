@@ -4,7 +4,7 @@
 [elastic社区](https://elasticsearch.cn/)
 # 开发资料
 
-[Github OAuth](https://docs.github.com/cn/developers/apps/building-oauth-apps/creating-an-oauth-app)
+[Github OAuth](  )
 
 [okhttp](https://square.github.io/okhttp/)
 
