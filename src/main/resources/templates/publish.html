@@ -79,9 +79,11 @@
           <label for="title">添加标签</label>
           <input type="text" class="form-control" id="tag" name="tag" placeholder="输入标签，以，号分离">
         </div>
-        <button  type="submit" class="btn btn-success btn-publish">发布</button>
+            <div class="alert alert-danger col-lg-9 col-md-12 col-sm-12 col-xs-12" th:if = "${error != null}" th:text="${error}"></div>
+              <button  type="submit" class="btn btn-success btn-publish ">发布</button>
       </form>
     </div>
+
     <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12" >
       <h3>问题发起指南</h3>
       · 问题标题:请用精简的语言描述您发布的问题，不超过25字

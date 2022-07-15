@@ -68,6 +68,6 @@ public class PublishController {
             questionMapper.CreateQuestion(question);
         }
 
-        return "rediect:/";
+        return "redirect:/";
     }
 }
