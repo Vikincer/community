@@ -9,8 +9,13 @@ import org.vikinc.community.dto.GithubUser;
 
 import java.io.IOException;
 
+/**
+ * 验证Github OAuth 的工具类
+ */
+
 @Component
 public class GithubProvider {
+    //获取access_token令牌
     public String getAccessToken(AccessTokenDTO accessTokenDTO){
         MediaType mediaType = MediaType.get("application/json; charset=utf-8");
         OkHttpClient client = new OkHttpClient();
@@ -30,7 +35,8 @@ public class GithubProvider {
     return null;
     }
 
-    public GithubUser getUser(String accessToken){
+    //获取github用户信息
+    public GithubUser getGithubUser(String accessToken){
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
                 .url("https://api.github.com/user")

@@ -10,6 +10,10 @@ import org.vikinc.community.mapper.UserMapper;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * 首页
+ */
+
 @Controller
 public class IndexController {
 

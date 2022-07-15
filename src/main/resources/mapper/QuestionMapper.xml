@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.vikinc.community.mapper.QuestionMapper">
+
+    <insert id="CreateQuestion" parameterType="org.vikinc.community.dto.Question">
+        INSERT INTO question (title,description,gmt_create,gmt_modified,creator,comment_count,like_count,view_count,tag)
+        value (#{title},#{description},#{gmtCreate},#{gmtModified},#{creator},#{commentCount},#{likeCount},#{viewCount},#{tag})
+    </insert>
+
+</mapper>

@@ -17,6 +17,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
+/**
+ * 获取github OAuth 权限
+ */
+
 @Controller
 public class AuthorizeController {
 
@@ -44,7 +48,7 @@ public class AuthorizeController {
         accessTokenDTO.setCode(code);
         accessTokenDTO.setRedirect_uri(redirectUri);
         String accessToken = githubProvider.getAccessToken(accessTokenDTO);
-        GithubUser githubUser = githubProvider.getUser(accessToken);
+        GithubUser githubUser = githubProvider.getGithubUser(accessToken);
 //        System.out.println(githubUser.toString());
         if(githubUser != null){
             //登录成功 创建token

@@ -1,9 +1,13 @@
 package org.vikinc.community.dto;
 
+/**
+ * Github 用户实体类
+ */
+
 public class GithubUser {
-    private String login;
-    private Long id;
-    private String bio;
+    private String login;   //用户名
+    private Long id;    //id
+    private String bio;     //详情
 
     @Override
     public String toString() {
