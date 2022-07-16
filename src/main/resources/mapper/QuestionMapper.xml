@@ -23,6 +23,10 @@
     </insert>
 
     <select id="getALLList" resultMap="question">
-        SELECT * FROM question
+        SELECT * FROM question LIMIT #{offset},#{size}
+    </select>
+
+    <select id="count" resultType="Integer">
+        SELECT count(*) FROM question
     </select>
 </mapper>

@@ -5,6 +5,8 @@ import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.vikinc.community.dto.DTOPagination;
 import org.vikinc.community.dto.DTOQuestion;
 import org.vikinc.community.dto.Question;
 import org.vikinc.community.dto.User;
@@ -30,7 +32,9 @@ public class IndexController {
     private QuestionService questionService;
 
     @GetMapping("/")
-    public String index(HttpServletRequest request, Model model){
+    public String index(HttpServletRequest request, Model model,
+                        @RequestParam(name = "page",defaultValue = "1") Integer page,
+                        @RequestParam(name = "size",defaultValue = "5") Integer size){
         //验证登录是否成功
         Cookie[] cookies = request.getCookies();
         if(cookies != null && cookies.length != 0)
@@ -44,8 +48,8 @@ public class IndexController {
             }
         }
 
-        List<DTOQuestion> dtoQuestionList = questionService.getALLList();
-        model.addAttribute("dtoQuestionList",dtoQuestionList);
+        DTOPagination dtoPaginations = questionService.getALLList(page,size);
+        model.addAttribute("dtoPaginations",dtoPaginations);
 
         return "index";
     }

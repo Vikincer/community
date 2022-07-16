@@ -3,6 +3,7 @@ package org.vikinc.community.service;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.vikinc.community.dto.DTOPagination;
 import org.vikinc.community.dto.DTOQuestion;
 import org.vikinc.community.dto.Question;
 import org.vikinc.community.dto.User;
@@ -20,9 +21,14 @@ public class QuestionService {
     @Autowired
     private QuestionMapper questionMapper;
 
-    public List<DTOQuestion> getALLList() {
-        List<Question> questionList = questionMapper.getALLList();
+    public DTOPagination getALLList(Integer page, Integer size) {
         List<DTOQuestion> dtoQuestionList = new ArrayList<>();
+        DTOPagination dtoPagination = new DTOPagination();
+        Integer total = questionMapper.count();  //问题总数
+        Integer offset = dtoPagination.setPagination(total, page, size);
+
+        List<Question> questionList = questionMapper.getALLList(offset,size);
+
         for (Question question : questionList) {
             User user = userMapper.getByaccountId(question.getCreator());
             if(user!= null){
@@ -31,8 +37,10 @@ public class QuestionService {
                 dtoQuestion.setUser(user);
                 dtoQuestionList.add(dtoQuestion);
             }
-
         }
-        return dtoQuestionList;
+
+        dtoPagination.setQuestionList(dtoQuestionList);
+
+        return dtoPagination;
     }
 }
