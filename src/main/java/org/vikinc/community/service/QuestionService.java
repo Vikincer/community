@@ -43,4 +43,28 @@ public class QuestionService {
 
         return dtoPagination;
     }
+
+
+    public DTOPagination getUserQuestionList(String accountId, Integer page, Integer size) {
+        List<DTOQuestion> dtoQuestionList = new ArrayList<>();
+        DTOPagination dtoPagination = new DTOPagination();
+        Integer total = questionMapper.count();  //问题总数
+        Integer offset = dtoPagination.setPagination(total, page, size);
+
+        List<Question> questionList = questionMapper.getUserQuestionLists(accountId,offset,size);
+
+        for (Question question : questionList) {
+            User user = userMapper.getByaccountId(question.getCreator());
+            if(user!= null){
+                DTOQuestion dtoQuestion = new DTOQuestion();
+                BeanUtils.copyProperties(question,dtoQuestion);
+                dtoQuestion.setUser(user);
+                dtoQuestionList.add(dtoQuestion);
+            }
+        }
+
+        dtoPagination.setQuestionList(dtoQuestionList);
+
+        return dtoPagination;
+    }
 }

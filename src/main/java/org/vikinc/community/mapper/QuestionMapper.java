@@ -15,4 +15,6 @@ public interface QuestionMapper {
     void CreateQuestion(Question question);
 
     Integer count();
+
+    List<Question> getUserQuestionLists(@Param("accountId") String accountId, @Param("offset") Integer offset, @Param("size") Integer size);
 }

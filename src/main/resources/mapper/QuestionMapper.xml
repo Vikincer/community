@@ -29,4 +29,8 @@
     <select id="count" resultType="Integer">
         SELECT count(*) FROM question
     </select>
+
+    <select id="getUserQuestionLists" resultMap="question">
+        SELECT * FROM question WHERE creator = #{accountId} LIMIT #{offset},#{size}
+    </select>
 </mapper>
