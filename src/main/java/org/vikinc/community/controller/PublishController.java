@@ -1,7 +1,9 @@
 package org.vikinc.community.controller;
 
 import jdk.nashorn.internal.runtime.logging.Logger;
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,7 +64,7 @@ public class PublishController {
             for (Cookie cookie : cookies){
                 if(cookie.getName().equals("token")){
                     String token = cookie.getValue();
-                    user = userMapper.selectByToken(token);
+                    user = userMapper.getByToken(token);
                     if(user != null )
                         request.getSession().setAttribute("user",user);
                     break;
@@ -77,6 +79,7 @@ public class PublishController {
             question.setDescription(description);
             question.setTag(tag);
             question.setId(user.getId());
+            question.setCreator(user.getAccountId());
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModified(question.getGmtCreate());
             questionMapper.CreateQuestion(question);

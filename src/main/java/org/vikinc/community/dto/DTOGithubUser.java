@@ -7,7 +7,7 @@ import lombok.Data;
  */
 
 @Data
-public class GithubUser {
+public class DTOGithubUser {
     private String login;   //用户名
     private Long id;    //id
     private String bio;     //详情

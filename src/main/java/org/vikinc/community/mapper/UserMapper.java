@@ -8,5 +8,7 @@ public interface UserMapper {
     //添加用户
     void insert(User user);
     //根据token查找用户
-    User selectByToken(String token);
+    User getByToken(String token);
+
+    User getByaccountId(String creator);
 }
