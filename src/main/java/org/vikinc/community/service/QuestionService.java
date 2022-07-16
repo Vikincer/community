@@ -25,10 +25,13 @@ public class QuestionService {
         List<DTOQuestion> dtoQuestionList = new ArrayList<>();
         for (Question question : questionList) {
             User user = userMapper.getByaccountId(question.getCreator());
-            DTOQuestion dtoQuestion = new DTOQuestion();
-            BeanUtils.copyProperties(question,dtoQuestion);
-            dtoQuestion.setUser(user);
-            dtoQuestionList.add(dtoQuestion);
+            if(user!= null){
+                DTOQuestion dtoQuestion = new DTOQuestion();
+                BeanUtils.copyProperties(question,dtoQuestion);
+                dtoQuestion.setUser(user);
+                dtoQuestionList.add(dtoQuestion);
+            }
+
         }
         return dtoQuestionList;
     }
