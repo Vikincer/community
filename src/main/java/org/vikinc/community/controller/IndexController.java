@@ -35,18 +35,6 @@ public class IndexController {
     public String index(HttpServletRequest request, Model model,
                         @RequestParam(name = "page",defaultValue = "1") Integer page,
                         @RequestParam(name = "size",defaultValue = "5") Integer size){
-        //验证登录是否成功
-        Cookie[] cookies = request.getCookies();
-        if(cookies != null && cookies.length != 0)
-        for (Cookie cookie : cookies){
-            if(cookie.getName().equals("token")){
-                String token = cookie.getValue();
-                User user = userMapper.getByToken(token);
-                if(user!= null )
-                    request.getSession().setAttribute("user",user);
-                break;
-            }
-        }
 
         DTOPagination dtoPaginations = questionService.getALLList(page,size);
         model.addAttribute("dtoPaginations",dtoPaginations);
