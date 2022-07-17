@@ -1,0 +1,11 @@
+body {
+  background-color: #efefef;
+}
+.main {
+  background-color: white;
+  margin: 50px 80px;
+}
+.row-hr-a {
+  color: #999;
+  font-size: 13px;
+}

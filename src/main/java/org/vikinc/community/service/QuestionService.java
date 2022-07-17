@@ -67,4 +67,15 @@ public class QuestionService {
 
         return dtoPagination;
     }
+
+    public DTOQuestion getQuestionListByID(Integer id) {
+        DTOQuestion dtoQuestion = new DTOQuestion();
+        Question question = questionMapper.getQuestionListByID(id);
+        String creator = question.getCreator();
+        User user = userMapper.getByaccountId(creator);
+        BeanUtils.copyProperties(question,dtoQuestion);
+        dtoQuestion.setUser(user);
+
+        return dtoQuestion;
+    }
 }
