@@ -12,24 +12,11 @@ import java.io.IOException;
 public class logOutController {
     @GetMapping("/logout")
     String logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setHeader("Pragma","No-cache");
+        request.getSession().removeAttribute("user");
+        Cookie cookie = new Cookie("token", null);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
 
-        response.setHeader("Cache-Control","no-cache");
-
-        response.setDateHeader("Expires", 0);
-
-        response.flushBuffer();
-
-        Cookie killMyCookie = new Cookie("mycookie", null);
-
-        killMyCookie.setMaxAge(0);
-
-        killMyCookie.setPath("/");
-
-        response.addCookie(killMyCookie);
-
-        request.getSession().invalidate();
-
-        return "/";
+        return "redirect:/";
     }
 }
