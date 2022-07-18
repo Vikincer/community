@@ -39,6 +39,15 @@
     </select>
 
     <update id="update" parameterType="org.vikinc.community.dto.Question">
-        UPDATE question set title = #{title},description = #{description},gmt_modified = #{gmtModified},tag = #{tag} WHERE id = #{id}
+        UPDATE question set title = #{title},
+                            description = #{description},
+                            gmt_modified = #{gmtModified},
+                            tag = #{tag},
+                            view_count = #{viewCount} WHERE id = #{id}
+    </update>
+
+    <update id="incView" parameterType="org.vikinc.community.dto.Question">
+        UPDATE question set view_count = view_count + #{viewCount}
+                        WHERE id = #{id}
     </update>
 </mapper>

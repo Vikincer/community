@@ -97,4 +97,12 @@ public class QuestionService {
             }
         }
     }
+
+    //自增长浏览量
+    public void incView(Integer id) {
+        Question updateQuestion = new Question();
+        updateQuestion.setId(id);
+        updateQuestion.setViewCount(1);
+        questionMapper.incView(updateQuestion);
+    }
 }
