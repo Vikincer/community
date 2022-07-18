@@ -21,5 +21,5 @@ public interface QuestionMapper {
 
     Question getQuestionByID(@Param("id")  Integer id);
 
-    void update(Question question);
+    int update(Question question);
 }

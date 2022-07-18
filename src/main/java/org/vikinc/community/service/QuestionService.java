@@ -7,6 +7,8 @@ import org.vikinc.community.dto.DTOPagination;
 import org.vikinc.community.dto.DTOQuestion;
 import org.vikinc.community.dto.Question;
 import org.vikinc.community.dto.User;
+import org.vikinc.community.exception.CustomizeErrorCode;
+import org.vikinc.community.exception.CustomizeException;
 import org.vikinc.community.mapper.QuestionMapper;
 import org.vikinc.community.mapper.UserMapper;
 
@@ -72,6 +74,9 @@ public class QuestionService {
     public DTOQuestion getQuestionByID(Integer id) {
         DTOQuestion dtoQuestion = new DTOQuestion();
         Question question = questionMapper.getQuestionByID(id);
+        if(question == null){
+            throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+        }
         String creator = question.getCreator();
         User user = userMapper.getByaccountId(creator);
         BeanUtils.copyProperties(question,dtoQuestion);
@@ -86,7 +91,10 @@ public class QuestionService {
         }else{
             //更新
             question.setGmtModified(question.getGmtCreate());
-            questionMapper.update(question);
+            int updated = questionMapper.update(question);
+            if(updated != 1){
+                throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+            }
         }
     }
 }
