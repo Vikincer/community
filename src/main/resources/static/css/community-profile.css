@@ -1,3 +1,10 @@
+body {
+    background-color: #efefef;
+}
+.main {
+    background-color: white;
+    margin: 50px 80px;
+}
 .section {
     margin-top: 15px;
 }

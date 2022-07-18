@@ -50,21 +50,24 @@ public class AuthorizeController {
         DTOGithubUser DTOGithubUser = githubProvider.getGithubUser(accessToken);
 //        System.out.println(githubUser.toString());
         if(DTOGithubUser != null){
-            //登录成功 创建token
-            String token = UUID.randomUUID().toString();
+            User user = userMapper.getByaccountId(DTOGithubUser.getId());
+            if(user == null){
+                //登录成功 创建token
+                String token = UUID.randomUUID().toString();
 
-            //创建User对象 写入数据库
-            User user = new User();
-            user.setAccountId(DTOGithubUser.getId().toString());
-            user.setName(DTOGithubUser.getLogin());
-            user.setToken(token);
-            user.setGmtCreate(System.currentTimeMillis());
-            user.setGmtModified(user.getGmtCreate());
-            user.setAvatarUrl(DTOGithubUser.getAvatarUrl());
-            userMapper.insert(user);
-            //将token写入cookie 前端验证
-            response.addCookie(new Cookie("token",token));
-
+                //创建User对象 写入数据库
+                user.setAccountId(DTOGithubUser.getId().toString());
+                user.setName(DTOGithubUser.getLogin());
+                user.setToken(token);
+                user.setGmtCreate(System.currentTimeMillis());
+                user.setGmtModified(user.getGmtCreate());
+                user.setAvatarUrl(DTOGithubUser.getAvatarUrl());
+                userMapper.insert(user);
+                //将token写入cookie 前端验证
+                response.addCookie(new Cookie("token",token));
+                return "redirect:/";
+            }
+            response.addCookie(new Cookie("token",user.getToken()));
             request.getSession().setAttribute("user", DTOGithubUser);
             return "redirect:/";
         }else {

@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html xml:th="http://www.thymeleaf.org" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <title>发布 - ViK社区</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript" src="/js/jquery-3.6.0.js"></script>
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" href="/css/community-error.css">
+  <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+
+
+</head>
+
+<body>
+<!--<p th:text="'Hello, ' + ${name} +'!' "/>-->
+<div th:insert="navigation :: nav"></div>
+
+<div class="jumbotron">
+  <h1>出错拉！</h1>
+  <p th:text="${message}"></p>
+  <p><a class="btn btn-primary btn-lg" href="/" role="button">回到首页</a></p>
+</div>
+
+</body>
+</html>

@@ -3,6 +3,7 @@ package org.vikinc.community.mapper;
 import jdk.internal.org.objectweb.asm.tree.analysis.Value;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.vikinc.community.dto.DTOQuestion;
 import org.vikinc.community.dto.Question;
 
 import java.util.List;
@@ -17,4 +18,8 @@ public interface QuestionMapper {
     Integer count();
 
     List<Question> getUserQuestionLists(@Param("accountId") String accountId, @Param("offset") Integer offset, @Param("size") Integer size);
+
+    Question getQuestionByID(@Param("id")  Integer id);
+
+    int update(Question question);
 }

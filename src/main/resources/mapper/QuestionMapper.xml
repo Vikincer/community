@@ -33,4 +33,12 @@
     <select id="getUserQuestionLists" resultMap="question">
         SELECT * FROM question WHERE creator = #{accountId} LIMIT #{offset},#{size}
     </select>
+
+    <select id="getQuestionByID" parameterType="Integer" resultMap="question">
+        SELECT * FROM question WHERE id = #{id}
+    </select>
+
+    <update id="update" parameterType="org.vikinc.community.dto.Question">
+        UPDATE question set title = #{title},description = #{description},gmt_modified = #{gmtModified},tag = #{tag} WHERE id = #{id}
+    </update>
 </mapper>
