@@ -25,4 +25,8 @@
     <select id="getByaccountId" parameterType="java.lang.String" resultMap="useraaaa">
         SELECT * FROM user WHERE account_id = #{creator}
     </select>
+
+    <select id="getUserList" resultMap="useraaaa">
+        SELECT * FROM user WHERE 1 = 1
+    </select>
 </mapper>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="fatal">
+    <Properties>
+        <Property name="baseDir" value="D:\logs"/>
+    </Properties>
+
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch） -->
+            <ThresholdFilter level="info" onMatch="ACCEPT"
+                             onMismatch="DENY"/>
+            <PatternLayout
+                    pattern="[%d{yyyy-MM-dd HH:mm:ss}] %highlight{%-5level} [%logger{36}] - %highlight{%msg}%n"/>
+        </Console>
+        <Console name="consolePrintSQL" target="SYSTEM_OUT">
+            <PatternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss}] %highlight{%-5level} [%logger{36}] - %highlight{%msg}%n" />
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Root level="TRACE">
+            <AppenderRef ref="Console"/>
+        </Root>
+        <Logger name="org.vikinc.community.mapper" level="TRACE" additivity="true">
+            <AppenderRef ref="consolePrintSQL"/>
+        </Logger>
+
+    </Loggers>
+</Configuration>
