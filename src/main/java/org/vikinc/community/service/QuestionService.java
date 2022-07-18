@@ -21,6 +21,7 @@ public class QuestionService {
     @Autowired
     private QuestionMapper questionMapper;
 
+    //获取所有问题列表
     public DTOPagination getALLList(Integer page, Integer size) {
         List<DTOQuestion> dtoQuestionList = new ArrayList<>();
         DTOPagination dtoPagination = new DTOPagination();
@@ -44,7 +45,7 @@ public class QuestionService {
         return dtoPagination;
     }
 
-
+//获取当前用户发布的所有问题列表
     public DTOPagination getUserQuestionList(String accountId, Integer page, Integer size) {
         List<DTOQuestion> dtoQuestionList = new ArrayList<>();
         DTOPagination dtoPagination = new DTOPagination();
@@ -67,15 +68,25 @@ public class QuestionService {
 
         return dtoPagination;
     }
-
-    public DTOQuestion getQuestionListByID(Integer id) {
+    //获取question详情页
+    public DTOQuestion getQuestionByID(Integer id) {
         DTOQuestion dtoQuestion = new DTOQuestion();
-        Question question = questionMapper.getQuestionListByID(id);
+        Question question = questionMapper.getQuestionByID(id);
         String creator = question.getCreator();
         User user = userMapper.getByaccountId(creator);
         BeanUtils.copyProperties(question,dtoQuestion);
         dtoQuestion.setUser(user);
 
         return dtoQuestion;
+    }
+    //创建或更新question
+    public void createOrUpdateQuestion(Question question) {
+        if(question.getId() == null){
+            questionMapper.CreateQuestion(question);
+        }else{
+            //更新
+            question.setGmtModified(question.getGmtCreate());
+            questionMapper.update(question);
+        }
     }
 }

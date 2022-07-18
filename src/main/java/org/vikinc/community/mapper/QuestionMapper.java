@@ -19,5 +19,7 @@ public interface QuestionMapper {
 
     List<Question> getUserQuestionLists(@Param("accountId") String accountId, @Param("offset") Integer offset, @Param("size") Integer size);
 
-    Question getQuestionListByID(@Param("id")  Integer id);
+    Question getQuestionByID(@Param("id")  Integer id);
+
+    void update(Question question);
 }

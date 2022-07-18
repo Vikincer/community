@@ -13,9 +13,6 @@ import org.vikinc.community.service.QuestionService;
 public class QuestionController {
 
     @Autowired
-    private QuestionMapper questionMapper;
-
-    @Autowired
     private QuestionService questionService;
 
     @GetMapping("/question/{id}")
@@ -23,7 +20,7 @@ public class QuestionController {
                                Model model){
 
 
-        DTOQuestion dtoQuestion = questionService.getQuestionListByID(id);
+        DTOQuestion dtoQuestion = questionService.getQuestionByID(id);
         model.addAttribute("question",dtoQuestion);
         return "question";
     }
