@@ -58,6 +58,19 @@ CREATE TABLE `user`  (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
+DROP TABLE IF EXISTS `comment`;
+CREATE TABLE `community`.`comment`  (
+                                         `id` bigint NOT NULL,
+                                         `parent_id` bigint NULL,
+                                         `type` int NULL,
+                                         `commentator` varchar(255) NULL,
+                                         `content` varchar(255) NULL,
+                                         `gmt_create` bigint NULL,
+                                         `gmt_modified` bigint NULL,
+                                         `like_count` bigint NULL,
+                                         PRIMARY KEY (`id`)
+);
+
 -- ----------------------------
 -- Records of user
 -- ----------------------------
