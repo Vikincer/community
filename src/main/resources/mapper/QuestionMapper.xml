@@ -50,4 +50,9 @@
         UPDATE question set view_count = view_count + #{viewCount}
                         WHERE id = #{id}
     </update>
+
+    <update id="incCommentCount" parameterType="org.vikinc.community.dto.Question">
+        UPDATE question set comment_count = comment_count + #{commentCount}
+        WHERE id = #{id}
+    </update>
 </mapper>

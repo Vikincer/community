@@ -7,4 +7,6 @@ import org.vikinc.community.dto.Comment;
 public interface CommentMapper {
 
     void insert(Comment comment);
+
+    Comment getCommentByID(int parentId);
 }

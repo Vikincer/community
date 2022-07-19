@@ -9,4 +9,8 @@
          value (#{parentId},#{type},#{commentator},#{content},#{gmtCreate},#{gmtModified},#{likeCount})
     </insert>
 
+    <select id="getCommentByID">
+        SELECT * FROM comment WHERE id = #{parentId}
+    </select>
+
 </mapper>

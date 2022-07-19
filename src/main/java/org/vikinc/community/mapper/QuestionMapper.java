@@ -24,4 +24,6 @@ public interface QuestionMapper {
     int update(Question question);
 
     void incView(Question updateQuestion);
+
+    int incCommentCount(Question updateQuestion);
 }

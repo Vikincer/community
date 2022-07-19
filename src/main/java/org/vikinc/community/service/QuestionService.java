@@ -87,6 +87,8 @@ public class QuestionService {
     //创建或更新question
     public void createOrUpdateQuestion(Question question) {
         if(question.getId() == null){
+            question.setGmtCreate(System.currentTimeMillis());
+            question.setGmtModified(question.getGmtCreate());
             questionMapper.CreateQuestion(question);
         }else{
             //更新
