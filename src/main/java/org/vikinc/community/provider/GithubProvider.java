@@ -5,6 +5,8 @@ import okhttp3.*;
 import org.springframework.stereotype.Component;
 import org.vikinc.community.dto.DTOAccessToken;
 import org.vikinc.community.dto.DTOGithubUser;
+import org.vikinc.community.exception.CustomizeErrorCode;
+import org.vikinc.community.exception.CustomizeException;
 
 import java.io.IOException;
 
@@ -30,8 +32,8 @@ public class GithubProvider {
             return accessToken;
         } catch (IOException e) {
             e.printStackTrace();
+            throw new CustomizeException(CustomizeErrorCode.TIMEOUT);
         }
-    return null;
     }
 
     //获取github用户信息

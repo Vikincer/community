@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.vikinc.community.dto.DTOAccessToken;
 import org.vikinc.community.dto.DTOGithubUser;
 import org.vikinc.community.dto.User;
+import org.vikinc.community.exception.CustomizeErrorCode;
+import org.vikinc.community.exception.CustomizeException;
 import org.vikinc.community.mapper.UserMapper;
 import org.vikinc.community.provider.GithubProvider;
 
@@ -72,7 +74,7 @@ public class AuthorizeController {
             return "redirect:/";
         }else {
             //登录失败
-            return "redirect:/";
+            throw new CustomizeException(CustomizeErrorCode.NO_LOGIN_GITHUB);
         }
     }
 }

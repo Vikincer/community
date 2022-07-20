@@ -2,6 +2,7 @@ package org.vikinc.community.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.vikinc.community.dto.Comment;
 import org.vikinc.community.dto.Question;
 import org.vikinc.community.enums.CommentTypeEnum;
@@ -19,6 +20,7 @@ public class CommentService {
     @Autowired
     private QuestionMapper questionMapper;
 
+    @Transactional
     public void insert(Comment comment) {
         if(comment.getParentId() == 0){
             throw new CustomizeException(CustomizeErrorCode.TAGET_PARAM_NOT_FOUND);
