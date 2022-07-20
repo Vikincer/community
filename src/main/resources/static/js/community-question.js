@@ -16,7 +16,15 @@ function commentPost() {
             if(reponse.code == 200){
                 $("#comment-section").hide()
             }else{
-                alert(reponse.message);
+                if(reponse.code == 2003){
+                    var isAccepted = confirm(reponse.message);
+                    if(isAccepted){
+                        window.open("https://github.com/login/oauth/authorize?client_id=e3922d21609fb22bdc10&redirect_uri=http://localhost:8080/callback&scope=user&state=1")
+                        window.localStorage.setItem("closable",true);
+                    }
+                }else{
+                    alert(reponse.message);
+                }
             }
             console.log(reponse);
         },
