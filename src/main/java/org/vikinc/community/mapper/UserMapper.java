@@ -16,4 +16,6 @@ public interface UserMapper {
 
     //查询用户
     List<User> getUserList();
+
+    List<User> getUserListById(List<String> userIds);
 }

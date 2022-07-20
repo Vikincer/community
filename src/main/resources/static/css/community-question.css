@@ -10,7 +10,8 @@ body {
   font-size: 13px;
 }
 .media-heading-h5 {
-  padding-top: 17px;
+  font-weight: bold;
+  padding-top: 0px;
 }
 .comment {
   margin: 10px 0;
@@ -18,4 +19,29 @@ body {
 .comment-button{
   float: right;
   margin-bottom: 10px;
+}
+.comment-sp {
+  margin-top: 0;
+  margin-left: 15px;
+
+}
+.comment-content {
+  margin-top: 5px;
+}
+.menu {
+  color: #999;
+  margin-top: 15px;
+}
+.menu .icon {
+  margin-right: 6px;
+  font-size: 15px;
+  cursor: pointer;
+}
+.menu .icon:hover {
+  color: #499ef3;
+}
+.comment-list {
+  margin-bottom: 15px;
+  padding: 5px;
+  border-bottom: 1px solid #999999;
 }

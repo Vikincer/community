@@ -1,15 +1,25 @@
 package org.vikinc.community.service;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.vikinc.community.dto.Comment;
+import org.vikinc.community.dto.DTOComment;
 import org.vikinc.community.dto.Question;
+import org.vikinc.community.dto.User;
 import org.vikinc.community.enums.CommentTypeEnum;
 import org.vikinc.community.exception.CustomizeErrorCode;
 import org.vikinc.community.exception.CustomizeException;
 import org.vikinc.community.mapper.CommentMapper;
 import org.vikinc.community.mapper.QuestionMapper;
+import org.vikinc.community.mapper.UserMapper;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class CommentService {
@@ -19,6 +29,9 @@ public class CommentService {
 
     @Autowired
     private QuestionMapper questionMapper;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Transactional
     public void insert(Comment comment) {
@@ -30,7 +43,7 @@ public class CommentService {
         }
         if(comment.getType() == CommentTypeEnum.COMMENT.getType()){
             //回复评论
-            Comment dbComment = commentMapper.getCommentByID(comment.getParentId());
+            Comment dbComment = commentMapper.getCommentByID(comment.getParentId(),comment.getCommentator());
             if(dbComment == null)
                 throw new CustomizeException(CustomizeErrorCode.COMMENT_NOT_FOUND);
             commentMapper.insert(comment);
@@ -44,5 +57,30 @@ public class CommentService {
             commentMapper.insert(comment);
             questionMapper.incCommentCount(question);
         }
+    }
+
+    public List<DTOComment> getCommentListByQuestionId(Integer id) {
+        List<Comment> commentList = commentMapper.getCommentListByID(id);
+        if(commentList.size() == 0){
+            return new ArrayList<>();
+        }
+
+        Set<String> commentators = commentList.stream().map(comment -> comment.getCommentator()).collect(Collectors.toSet());
+        List<String> userIds = new ArrayList();
+        userIds.addAll(commentators);
+//        List<User> userList = userMapper.getUserListById(userIds);
+
+        List<DTOComment> dtoComment = new ArrayList<>(commentList.size());
+
+        for (int i = 0; i<commentList.size(); i++){
+            DTOComment temp = new DTOComment();
+            BeanUtils.copyProperties(commentList.get(i),temp);
+            User user = userMapper.getByaccountId(commentList.get(i).getCommentator());
+            if(user != null){
+                temp.setUser(user);
+            }
+            dtoComment.add(temp);
+        }
+        return dtoComment;
     }
 }

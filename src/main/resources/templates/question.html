@@ -19,14 +19,16 @@
 <div class="container-fluid main">
     <div class="row">
         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
-            <div  class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+            <div  class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <h2> <span th:text="${question.title}"></span></h2>
                 <span class="media-media-body-span-text">
-                作者：<span th:text="${question.user.name}"></span>&nbsp&nbsp | &nbsp&nbsp
-                发布时间：<span th:text="${#dates.format(question.gmtCreate, 'yyyy MMMM dd')}"></span>&nbsp&nbsp | &nbsp&nbsp
-                浏览数：<span th:text="${question.viewCount}"></span>
-            </span>
+                    作者：<span th:text="${question.user.name}"></span>&nbsp&nbsp | &nbsp&nbsp
+                    发布时间：<span th:text="${#dates.format(question.gmtCreate, 'yyyy MMMM dd')}"></span>&nbsp&nbsp | &nbsp&nbsp
+                    浏览数：<span th:text="${question.viewCount}"></span>
+                </span>
+
                 <hr>
+
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" th:text="${question.description}"></div>
                 <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12"/>
                 <a class="row-hr-a" th:href="@{'/publish/' + ${question.id}}" th:if="${session.user != null && session.user.accountId == question.creator}">
@@ -34,9 +36,38 @@
                     编辑
                 </a>
             </div>
+            <h4>
+                <span th:text="${question.commentCount}"></span>个回复
+            </h4>
+            <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12 comment-sp">
 
-            <hr class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
-            <div  class="col-lg-9 col-md-12 col-sm-12 col-xs-12" id="comment-section">
+            <div  class="col-lg-12 col-md-12 col-sm-12 col-xs-12 comment-list" th:each="dtoComment : ${dtoCommentList}">
+                <div class="media">
+                    <div class="media-left">
+                        <a href="#">
+                            <img class="media-object img-rounded"
+                                 th:src="${dtoComment.user} == null ? '/img/error.jpg' : ${dtoComment.user.avatarUrl}">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h5 class="media-heading media-heading-h5">
+                            <span th:text="${dtoComment.user} == null ? '未知用户' : ${dtoComment.user.name}"></span>
+                        </h5>
+                        <div class="comment-content" th:text="${dtoComment.content}"></div>
+                        <div class="menu">
+                            <span class="glyphicon glyphicon-thumbs-up icon"></span>
+                            <span class="glyphicon glyphicon-comment icon"></span>
+                            <span class="pull-right" th:text="${#dates.format(dtoComment.gmtCreate, 'yyyy MMMM dd')}"></span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+            <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div  class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="comment-section">
                 <div class="media">
                     <div class="media-left">
                         <a href="#">
@@ -44,10 +75,9 @@
                         </a>
                     </div>
                     <div class="media-body">
-                        <h5 class="media-heading media-heading-h5"/>
-                        <span th:text="${question.user.name}"></span>
-                        </h4>
-                        </span>
+                        <h5 class="media-heading media-heading-h5">
+                            <span th:text="${question.user.name}"></span>
+                        </h5>
                     </div>
                 </div>
                 <input type="hidden" id="question_id" th:value="${question.id}">

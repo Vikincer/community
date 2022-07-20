@@ -2,6 +2,8 @@ package org.vikinc.community.dto;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class Comment {
     private int id;

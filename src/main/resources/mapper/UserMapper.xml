@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.vikinc.community.mapper.UserMapper">
 
-    <resultMap id="useraaaa" type="org.vikinc.community.dto.User">
+    <resultMap id="user" type="org.vikinc.community.dto.User">
         <result property="id" column="id"/>
         <result property="name" column="name"/>
         <result property="accountId" column="account_id"/>
@@ -18,15 +18,22 @@
         INSERT INTO user (name,account_id,token,gmt_create,gmt_modified,avatar_url) value (#{name},#{accountId},#{token},#{gmtCreate},#{gmtModified},#{avatarUrl})
     </insert>
 
-    <select id="getByToken" parameterType="java.lang.String" resultMap="useraaaa">
+    <select id="getByToken" parameterType="java.lang.String" resultMap="user">
         SELECT * FROM user WHERE token = #{token}
     </select>
 
-    <select id="getByaccountId" parameterType="java.lang.String" resultMap="useraaaa">
+    <select id="getByaccountId" parameterType="java.lang.String" resultMap="user">
         SELECT * FROM user WHERE account_id = #{creator}
     </select>
 
-    <select id="getUserList" resultMap="useraaaa">
+    <select id="getUserList" resultMap="user">
         SELECT * FROM user WHERE 1 = 1
+    </select>
+    
+    <select id="getUserListById" resultMap="user">
+        SELECT * FROM user WHERE account_id IN
+        <foreach item="accId" index="index" collection="list" open="(" separator="," close=")">
+            #{accId}
+        </foreach>
     </select>
 </mapper>
