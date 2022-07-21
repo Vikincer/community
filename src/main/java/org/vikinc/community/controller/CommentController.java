@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.apache.commons.lang3.*;
 import org.vikinc.community.dto.Comment;
 import org.vikinc.community.dto.DTOCreateComment;
 import org.vikinc.community.dto.DTOResult;
@@ -29,6 +30,8 @@ public class CommentController {
         User user = (User) request.getSession().getAttribute("user");
         if(user == null)
             return DTOResult.errorOf(CustomizeErrorCode.NO_LOGIN);
+        if(dtoCreateComment == null || StringUtils.isBlank(dtoCreateComment.getContent()))
+            return DTOResult.errorOf(CustomizeErrorCode.CONTENT_IS_EMPTY);
 
         Comment comment = new Comment();
         comment.setParentId(dtoCreateComment.getParentId());

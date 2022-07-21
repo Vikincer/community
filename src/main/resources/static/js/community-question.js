@@ -1,6 +1,10 @@
 function commentPost() {
     var questionId = $("#question_id").val();
     var content = $("#comment-content").val();
+    if(!content){
+        alert("不能回复空内容！");
+        return;
+    }
     // console.log(questionId);
     // console.log(content);
     $.ajax({
@@ -14,7 +18,7 @@ function commentPost() {
         }),
         success: function(reponse){
             if(reponse.code == 200){
-                $("#comment-section").hide()
+                window.location.reload();
             }else{
                 if(reponse.code == 2003){
                     var isAccepted = confirm(reponse.message);

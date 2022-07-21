@@ -60,7 +60,7 @@ public class CommentService {
     }
 
     public List<DTOComment> getCommentListByQuestionId(Integer id) {
-        List<Comment> commentList = commentMapper.getCommentListByID(id);
+        List<Comment> commentList = commentMapper.getCommentListByIDDESC(id);
         if(commentList.size() == 0){
             return new ArrayList<>();
         }

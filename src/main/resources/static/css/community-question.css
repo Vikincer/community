@@ -45,3 +45,6 @@ body {
   padding: 5px;
   border-bottom: 1px solid #999999;
 }
+.question-title {
+  margin-top: 25px;
+}

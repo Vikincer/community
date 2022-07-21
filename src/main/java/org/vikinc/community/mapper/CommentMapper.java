@@ -14,4 +14,7 @@ public interface CommentMapper {
     Comment getCommentByID(@Param("parentId") int parentId, @Param("commentator") String commentator);
 
     List<Comment> getCommentListByID(Integer id);
+
+    //按时间倒序排列
+    List<Comment> getCommentListByIDDESC(Integer id);
 }

@@ -8,7 +8,8 @@ public enum CustomizeErrorCode implements ICustomizeErrorCode {
     TYPE_PARAM_WRONG("评论类型错误或不存在",2005),
     COMMENT_NOT_FOUND("你回复的评论不在了，要不换个试试！",2006),
     TIMEOUT("连接超时，要不稍后再试试！",2007),
-    NO_LOGIN_GITHUB("未能找到相对应的账户，请重新登录！",2008);
+    NO_LOGIN_GITHUB("未能找到相对应的账户，请重新登录！",2008),
+    CONTENT_IS_EMPTY("输入的内容不能为空！",2009);
 
 
     private String message;

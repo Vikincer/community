@@ -28,4 +28,7 @@
         SELECT * FROM comment WHERE parent_id = #{parentId}
     </select>
 
+    <select id="getCommentListByIDDESC" resultMap="comment">
+        SELECT * FROM comment WHERE parent_id = #{parentId} ORDER BY gmt_create DESC
+    </select>
 </mapper>
