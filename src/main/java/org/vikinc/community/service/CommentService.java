@@ -75,9 +75,11 @@ public class CommentService {
             DTOComment temp = new DTOComment();
             BeanUtils.copyProperties(commentList.get(i),temp);
             User user = userMapper.getByaccountId(commentList.get(i).getCommentator());
+            int commentCount = commentMapper.getCommentCount(commentList.get(i).getId());
             if(user != null){
                 temp.setUser(user);
             }
+            temp.setCommentCount(commentCount);
             dtoComment.add(temp);
         }
         return dtoComment;

@@ -20,4 +20,6 @@ public interface CommentMapper {
 
     //二级评论
     List<Comment> getSecCommentListByTargetId(int id);
+
+    int getCommentCount(int id);
 }

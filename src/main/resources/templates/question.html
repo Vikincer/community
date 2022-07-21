@@ -62,7 +62,10 @@
                             <div class="comment-content" th:text="${dtoComment.content}"></div>
                             <div class="menu">
                                 <span class="glyphicon glyphicon-thumbs-up icon"></span>
-                                <span class="glyphicon glyphicon-comment icon" th:data-id="${dtoComment.id}" onclick="collapseComments(this)"></span>
+                                <span class="comment-icon" th:data-id="${dtoComment.id}" onclick="collapseComments(this)">
+                                    <span class="glyphicon glyphicon-comment"></span>
+                                    <span th:text="${dtoComment.commentCount} != 0 ? ${dtoComment.commentCount} : '' "></span>
+                                </span>
                                 <span class="pull-right" th:text="${#dates.format(dtoComment.gmtCreate, 'yyyy MMMM dd')}"></span>
                             </div>
 

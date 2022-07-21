@@ -43,6 +43,13 @@ body {
 .menu .icon:hover {
   color: #499ef3;
 }
+.menu .comment-icon {
+  font-size: 15px;
+  cursor: pointer;
+}
+.menu .comment-icon:hover {
+  color: #499ef3;
+}
 .comment-list {
   margin-bottom: 15px;
   padding: 5px;
