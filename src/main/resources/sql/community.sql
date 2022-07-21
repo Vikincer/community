@@ -77,3 +77,6 @@ CREATE TABLE `community`.`comment`  (
 INSERT INTO `user` VALUES (7, 'Vikincer', '73332369', 'e6298725-b641-47e5-8f23-2f506227043d', 1657901078158, 1657901078158, 'https://avatars.githubusercontent.com/u/73332369?v=4');
 
 SET FOREIGN_KEY_CHECKS = 1;
+
+ALTER TABLE `community`.`comment`
+    ADD COLUMN `target_id` int NULL COMMENT '二级评论对象' AFTER `like_count`;

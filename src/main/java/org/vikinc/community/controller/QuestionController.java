@@ -22,6 +22,12 @@ public class QuestionController {
     @Autowired
     private CommentService commentService;
 
+    /**
+     *
+     * @param id question.id
+     * @param model
+     * @return
+     */
     @GetMapping("/question/{id}")
     public String questionList(@PathVariable("id") Integer id,
                                Model model){
@@ -32,6 +38,8 @@ public class QuestionController {
         questionService.incView(id);
         model.addAttribute("question",dtoQuestion);
         model.addAttribute("dtoCommentList",dtoCommentList);
+
+
         return "question";
     }
 }

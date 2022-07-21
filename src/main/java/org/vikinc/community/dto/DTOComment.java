@@ -12,5 +12,6 @@ public class DTOComment {
     private Long gmtCreate;
     private Long gmtModified;
     private Long likeCount;
+    private Integer targetId;
     private User user;
 }

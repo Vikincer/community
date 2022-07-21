@@ -6,9 +6,10 @@ import org.vikinc.community.exception.CustomizeErrorCode;
 import org.vikinc.community.exception.CustomizeException;
 
 @Data
-public class DTOResult {
+public class DTOResult<T> {
     private Integer code;
     private String message;
+    private T data;
     public static DTOResult errorOf(Integer code,String message){
         DTOResult result = new DTOResult();
         result.setCode(code);
@@ -31,5 +32,11 @@ public class DTOResult {
         return result;
     }
 
-
+    public static <T> DTOResult okOf(T t) {
+        DTOResult result = new DTOResult();
+        result.setCode(200);
+        result.setMessage("请求成功");
+        result.setData(t);
+        return result;
+    }
 }

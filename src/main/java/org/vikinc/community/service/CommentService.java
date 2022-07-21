@@ -41,13 +41,7 @@ public class CommentService {
         if(comment.getType() == null || !CommentTypeEnum.isExist(comment.getType())){
             throw new CustomizeException(CustomizeErrorCode.TYPE_PARAM_WRONG);
         }
-        if(comment.getType() == CommentTypeEnum.COMMENT.getType()){
-            //回复评论
-            Comment dbComment = commentMapper.getCommentByID(comment.getParentId(),comment.getCommentator());
-            if(dbComment == null)
-                throw new CustomizeException(CustomizeErrorCode.COMMENT_NOT_FOUND);
-            commentMapper.insert(comment);
-        }else{
+        if(comment.getType() == CommentTypeEnum.Question.getType()){
             //回复问题
             Question question = questionMapper.getQuestionByID(comment.getParentId());
             if(question == null ){
@@ -56,6 +50,11 @@ public class CommentService {
             question.setCommentCount(1);
             commentMapper.insert(comment);
             questionMapper.incCommentCount(question);
+        }else{
+            Question question = questionMapper.getQuestionByID(comment.getParentId());
+            question.setCommentCount(1);
+            questionMapper.incCommentCount(question);
+            commentMapper.insert(comment);
         }
     }
 
@@ -72,6 +71,25 @@ public class CommentService {
 
         List<DTOComment> dtoComment = new ArrayList<>(commentList.size());
 
+        for (int i = 0; i<commentList.size(); i++){
+            DTOComment temp = new DTOComment();
+            BeanUtils.copyProperties(commentList.get(i),temp);
+            User user = userMapper.getByaccountId(commentList.get(i).getCommentator());
+            if(user != null){
+                temp.setUser(user);
+            }
+            dtoComment.add(temp);
+        }
+        return dtoComment;
+    }
+
+    public List<DTOComment> getSecCommentListByTargetId(int id) {
+        List<Comment> commentList = commentMapper.getSecCommentListByTargetId(id);
+        if(commentList.size() == 0){
+            return new ArrayList<>();
+        }
+
+        List<DTOComment> dtoComment = new ArrayList<>(commentList.size());
         for (int i = 0; i<commentList.size(); i++){
             DTOComment temp = new DTOComment();
             BeanUtils.copyProperties(commentList.get(i),temp);

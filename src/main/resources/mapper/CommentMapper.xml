@@ -13,14 +13,34 @@
         <result property="gmtCreate" column="gmt_create"/>
         <result property="gmtModified" column="gmt_modified"/>
         <result property="likeCount" column="like_count"/>
+        <result property="targetId" column="target_id"/>
     </resultMap>
 
     <insert id="insert" parameterType="org.vikinc.community.dto.Comment">
-        INSERT INTO comment (parent_id,type,commentator,content,gmt_create,gmt_modified,like_count)
-         value (#{parentId},#{type},#{commentator},#{content},#{gmtCreate},#{gmtModified},#{likeCount})
+        INSERT INTO comment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="parentId != null">parent_id,</if>
+            <if test="type != null">type,</if>
+            <if test="commentator != null">commentator,</if>
+            <if test="content != null">content,</if>
+            <if test="gmtCreate != null">gmt_create,</if>
+            <if test="gmtModified != null">gmt_modified,</if>
+            <if test="likeCount != null">like_count,</if>
+            <if test="targetId != null">target_id,</if>
+        </trim>
+        <trim prefix="value (" suffix=")" suffixOverrides=",">
+            <if test="parentId != null">#{parentId},</if>
+            <if test="type != null">#{type},</if>
+            <if test="commentator != null">#{commentator},</if>
+            <if test="content != null">#{content},</if>
+            <if test="gmtCreate != null">#{gmtCreate},</if>
+            <if test="gmtModified != null">#{gmtModified},</if>
+            <if test="likeCount != null">#{likeCount},</if>
+            <if test="targetId != null">#{targetId},</if>
+        </trim>
     </insert>
 
-    <select id="getCommentByID">
+    <select id="getCommentByID" resultMap="comment">
         SELECT * FROM comment WHERE parent_id = #{parentId} AND commentator = #{commentator}
     </select>
 
@@ -29,6 +49,12 @@
     </select>
 
     <select id="getCommentListByIDDESC" resultMap="comment">
-        SELECT * FROM comment WHERE parent_id = #{parentId} ORDER BY gmt_create DESC
+        SELECT * FROM comment WHERE parent_id = #{parentId} AND type = 1
+        ORDER BY gmt_create DESC
+    </select>
+
+    <select id="getSecCommentListByTargetId" resultMap="comment">
+        SELECT * FROM comment WHERE type = 2 AND target_id = #{id}
+        ORDER BY gmt_create DESC
     </select>
 </mapper>

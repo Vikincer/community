@@ -17,4 +17,7 @@ public interface CommentMapper {
 
     //按时间倒序排列
     List<Comment> getCommentListByIDDESC(Integer id);
+
+    //二级评论
+    List<Comment> getSecCommentListByTargetId(int id);
 }

@@ -7,4 +7,5 @@ public class DTOCreateComment {
     private int parentId;
     private String content;
     private Integer type;
+    private Integer targetId;
 }
