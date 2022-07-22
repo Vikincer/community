@@ -26,4 +26,7 @@ public interface QuestionMapper {
     void incView(Question updateQuestion);
 
     int incCommentCount(Question updateQuestion);
+
+    List<Question> getTagRelated(Question question);
+
 }

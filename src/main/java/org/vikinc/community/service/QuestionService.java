@@ -1,19 +1,20 @@
 package org.vikinc.community.service;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.vikinc.community.dto.DTOPagination;
-import org.vikinc.community.dto.DTOQuestion;
-import org.vikinc.community.dto.Question;
-import org.vikinc.community.dto.User;
+import org.vikinc.community.dto.*;
 import org.vikinc.community.exception.CustomizeErrorCode;
 import org.vikinc.community.exception.CustomizeException;
 import org.vikinc.community.mapper.QuestionMapper;
 import org.vikinc.community.mapper.UserMapper;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.StringJoiner;
+import java.util.stream.Collectors;
 
 @Service
 public class QuestionService {
@@ -106,5 +107,23 @@ public class QuestionService {
         updateQuestion.setId(id);
         updateQuestion.setViewCount(1);
         questionMapper.incView(updateQuestion);
+    }
+
+    public List<DTOQuestion> getTagRelated(DTOQuestion dtoTag) {
+        if(StringUtils.isBlank(dtoTag.getTag()))
+            return new ArrayList<>();
+
+        String[] tag = StringUtils.split(dtoTag.getTag(), ",");
+        String regexpTag = Arrays.stream(tag).collect(Collectors.joining("|"));
+        Question question = new Question();
+        question.setId(dtoTag.getId());
+        question.setTag(regexpTag);
+        List<Question> questionList = questionMapper.getTagRelated(question);
+        List<DTOQuestion> dtoQuestionList = questionList.stream().map(q -> {
+            DTOQuestion dtoQuestion = new DTOQuestion();
+            BeanUtils.copyProperties(q,dtoQuestion);
+            return dtoQuestion;
+        }).collect(Collectors.toList());
+        return dtoQuestionList;
     }
 }

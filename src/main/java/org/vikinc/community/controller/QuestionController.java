@@ -35,7 +35,10 @@ public class QuestionController {
 
         List<DTOComment> dtoCommentList = commentService.getCommentListByQuestionId(id);
 
+        List<DTOQuestion> dtoTagList = questionService.getTagRelated(dtoQuestion);
+
         questionService.incView(id);
+        model.addAttribute("dtoTagList",dtoTagList);
         model.addAttribute("question",dtoQuestion);
         model.addAttribute("dtoCommentList",dtoCommentList);
 

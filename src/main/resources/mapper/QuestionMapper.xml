@@ -23,7 +23,8 @@
     </insert>
 
     <select id="getALLList" resultMap="question">
-        SELECT * FROM question LIMIT #{offset},#{size}
+        SELECT * FROM question ORDER BY gmt_create DESC
+            LIMIT #{offset},#{size}
     </select>
 
     <select id="count" resultType="Integer">
@@ -31,7 +32,7 @@
     </select>
 
     <select id="getUserQuestionLists" resultMap="question">
-        SELECT * FROM question WHERE creator = #{accountId} LIMIT #{offset},#{size}
+        SELECT * FROM question WHERE creator = #{accountId} ORDER BY gmt_create DESC LIMIT #{offset},#{size}
     </select>
 
     <select id="getQuestionByID" parameterType="Integer" resultMap="question">
@@ -55,4 +56,8 @@
         UPDATE question set comment_count = comment_count + #{commentCount}
         WHERE id = #{id}
     </update>
+
+    <select id="getTagRelated" parameterType="org.vikinc.community.dto.Question" resultType="org.vikinc.community.dto.Question">
+        SELECT * FROM question WHERE id != #{id} AND tag REGEXP #{tag}
+    </select>
 </mapper>
