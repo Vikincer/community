@@ -34,12 +34,12 @@ public class QuestionService {
 
         for (Question question : questionList) {
             User user = userMapper.getByaccountId(question.getCreator());
+            DTOQuestion dtoQuestion = new DTOQuestion();
+            BeanUtils.copyProperties(question,dtoQuestion);
             if(user!= null){
-                DTOQuestion dtoQuestion = new DTOQuestion();
-                BeanUtils.copyProperties(question,dtoQuestion);
                 dtoQuestion.setUser(user);
-                dtoQuestionList.add(dtoQuestion);
             }
+            dtoQuestionList.add(dtoQuestion);
         }
 
         dtoPagination.setQuestionList(dtoQuestionList);

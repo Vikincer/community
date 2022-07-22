@@ -23,7 +23,7 @@
             <div  class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <h2 class="question-title"> <span th:text="${question.title}"></span></h2>
                 <span class="media-media-body-span-text">
-                    作者：<span th:text="${question.user.name}"></span>&nbsp&nbsp | &nbsp&nbsp
+                    作者：<span th:text="${question.user} == null ? '未知用户' : ${question.user.name}"></span>&nbsp&nbsp | &nbsp&nbsp
                     发布时间：<span th:text="${#dates.format(question.gmtCreate, 'yyyy MMMM dd')}"></span>&nbsp&nbsp | &nbsp&nbsp
                     浏览数：<span th:text="${question.viewCount}"></span>
                 </span>
@@ -96,12 +96,12 @@
                     <div class="media">
                         <div class="media-left">
                             <a href="#">
-                                <img class="media-object img-rounded" th:src="${question.user.avatarUrl}" >
+                                <img class="media-object img-rounded" th:src="${session.user} == null ? '/img/error.jpg' : ${session.user.avatarUrl}" >
                             </a>
                         </div>
                         <div class="media-body">
                             <h5 class="media-heading media-heading-h5">
-                                <span th:text="${question.user.name}"></span>
+                                <span th:text="${session.user} == null ? '未知用户' : ${session.user.name}"></span>
                             </h5>
                         </div>
                     </div>
@@ -120,12 +120,12 @@
                 <div class="media">
                     <div class="media-left">
                         <a href="#">
-                            <img class="media-object img-circle" th:src="${question.user.avatarUrl}" >
+                            <img class="media-object img-circle"  th:src="${question.user} == null ? '/img/error.jpg' : ${question.user.avatarUrl}" >
                         </a>
                     </div>
                     <div class="media-body">
                         <h4 class="media-heading"/>
-                        <span th:text="${question.user.name}"></span>
+                        <span th:text="${question.user} == null ? '未知用户' : ${question.user.name}"></span>
                         </h4>
                         </span>
                     </div>

@@ -48,4 +48,18 @@ public class ProfileController {
         return "profile";
     }
 
+    @GetMapping("/profile")
+    public String index(HttpServletRequest request, Model model,
+                        @RequestParam(name = "page",defaultValue = "1") Integer page,
+                        @RequestParam(name = "size",defaultValue = "5") Integer size){
+
+        User user = (User) request.getSession().getAttribute("user");
+        if(user == null)
+            return "redirect:/";
+        DTOPagination dtoPagination = questionService.getUserQuestionList(user.getAccountId(), page, size);
+        model.addAttribute("dtoPagination",dtoPagination);
+
+        return "profile";
+    }
+
 }

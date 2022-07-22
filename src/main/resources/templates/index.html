@@ -33,7 +33,8 @@
             <div class="media" th:each="question : ${dtoPaginations.questionList}">
                 <div class="media-left">
                     <a href="#">
-                        <img class="media-object img-rounded" th:src="${question.user.avatarUrl}" >
+                        <img class="media-object img-rounded"
+                             th:src="${question.user} == null ? '/img/error.jpg' : ${question.user.avatarUrl}">
                     </a>
                 </div>
                 <div class="media-body">
