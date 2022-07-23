@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class DTOPagination {
-    private List<DTOQuestion> questionList;
+public class DTOPagination<T> {
+    private List<T> tList;
     private boolean showPrevious;   //上一页
     private boolean showNext;       //下一页
     private boolean showFirstPage;  //第一页

@@ -29,4 +29,5 @@ public interface QuestionMapper {
 
     List<Question> getTagRelated(Question question);
 
+    Integer getQuestionCountByUser(String accountId);
 }

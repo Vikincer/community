@@ -35,6 +35,10 @@
         SELECT * FROM question WHERE creator = #{accountId} ORDER BY gmt_create DESC LIMIT #{offset},#{size}
     </select>
 
+    <select id="getQuestionCountByUser" resultType="Integer">
+        SELECT count(*) FROM question WHERE creator = #{accountId}
+    </select>
+
     <select id="getQuestionByID" parameterType="Integer" resultMap="question">
         SELECT * FROM question WHERE id = #{id}
     </select>

@@ -61,4 +61,8 @@
     <select id="getCommentCount" resultType="int">
         SELECT count(*) FROM comment WHERE target_id = #{id}
     </select>
+
+    <select id="getCommentByTargetId" resultMap="comment">
+        SELECT * FROM comment WHERE type = 2 AND id = #{targetId}
+    </select>
 </mapper>

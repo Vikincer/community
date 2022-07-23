@@ -80,3 +80,18 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 ALTER TABLE `community`.`comment`
     ADD COLUMN `target_id` int NULL COMMENT '二级评论对象' AFTER `like_count`;
+
+CREATE TABLE `community`.`notification`  (
+                                         `id` int NOT NULL,
+                                         `notifier` varchar(255) NULL COMMENT '发送人',
+                                         `receiver` varchar(255) NULL COMMENT '接收人',
+                                         `outerId` bigint NULL,
+                                         `type` int NULL,
+                                         `gmt_create` bigint NULL,
+                                         `status` int NULL DEFAULT 0,
+                                         PRIMARY KEY (`id`)
+);
+
+ALTER TABLE `community`.`notification`
+    ADD COLUMN `notifierName` varchar(255) NULL AFTER `status`,
+ADD COLUMN `outerTitle` varchar(255) NULL AFTER `notifierName`;

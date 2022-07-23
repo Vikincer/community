@@ -4,19 +4,18 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.vikinc.community.dto.Comment;
-import org.vikinc.community.dto.DTOComment;
-import org.vikinc.community.dto.Question;
-import org.vikinc.community.dto.User;
+import org.vikinc.community.dto.*;
 import org.vikinc.community.enums.CommentTypeEnum;
+import org.vikinc.community.enums.NotificationStatusEnum;
+import org.vikinc.community.enums.NotificationTypeEnum;
 import org.vikinc.community.exception.CustomizeErrorCode;
 import org.vikinc.community.exception.CustomizeException;
 import org.vikinc.community.mapper.CommentMapper;
+import org.vikinc.community.mapper.NotificationMapper;
 import org.vikinc.community.mapper.QuestionMapper;
 import org.vikinc.community.mapper.UserMapper;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -33,6 +32,11 @@ public class CommentService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private NotificationMapper notificationMapper;
+
+    private Notification notification = new Notification();
+
     @Transactional
     public void insert(Comment comment) {
         if(comment.getParentId() == 0){
@@ -41,6 +45,7 @@ public class CommentService {
         if(comment.getType() == null || !CommentTypeEnum.isExist(comment.getType())){
             throw new CustomizeException(CustomizeErrorCode.TYPE_PARAM_WRONG);
         }
+        User user = userMapper.getByaccountId(comment.getCommentator());
         if(comment.getType() == CommentTypeEnum.Question.getType()){
             //回复问题
             Question question = questionMapper.getQuestionByID(comment.getParentId());
@@ -50,11 +55,35 @@ public class CommentService {
             question.setCommentCount(1);
             commentMapper.insert(comment);
             questionMapper.incCommentCount(question);
+
+            //创建通知
+            notification.setGmtCreate(System.currentTimeMillis());
+            notification.setType(NotificationTypeEnum.REPLY_QUESTION.getType());
+            notification.setOuterId(question.getId());
+            notification.setOuterTitle(question.getTitle());
+            notification.setNotifierName(user.getName());
+            notification.setNotifier(comment.getCommentator()); //发送人
+            notification.setReceiver(question.getCreator()); //接收人
+            notification.setStatus(NotificationStatusEnum.UNREAD.getStatus());
+            notificationMapper.insert(notification);
         }else{
+
             Question question = questionMapper.getQuestionByID(comment.getParentId());
             question.setCommentCount(1);
             questionMapper.incCommentCount(question);
             commentMapper.insert(comment);
+            //创建通知
+            notification.setGmtCreate(System.currentTimeMillis());
+            notification.setType(NotificationTypeEnum.REPLY_COMMENT.getType());
+            notification.setOuterId(question.getId());
+            Comment targetComment = commentMapper.getCommentByTargetId(comment.getTargetId());      //根据targetId 找到 comment
+            String receiver = targetComment.getCommentator();   // 再找commentator
+            notification.setNotifier(comment.getCommentator()); //发送人
+            notification.setReceiver(receiver); //接收人
+            notification.setOuterTitle(question.getTitle());
+            notification.setNotifierName(user.getName());
+            notification.setStatus(NotificationStatusEnum.UNREAD.getStatus());
+            notificationMapper.insert(notification);
         }
     }
 

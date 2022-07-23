@@ -13,6 +13,7 @@ public class DTOQuestion {
     private int commentCount = 0;   //评论数
     private int likeCount = 0;
     private int viewCount = 0;
+    private Integer questionCount;
     private String tag;
     private User user;
 }

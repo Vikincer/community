@@ -7,13 +7,13 @@ import org.springframework.stereotype.Service;
 import org.vikinc.community.dto.*;
 import org.vikinc.community.exception.CustomizeErrorCode;
 import org.vikinc.community.exception.CustomizeException;
+import org.vikinc.community.mapper.NotificationMapper;
 import org.vikinc.community.mapper.QuestionMapper;
 import org.vikinc.community.mapper.UserMapper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,6 +23,8 @@ public class QuestionService {
     private UserMapper userMapper;
     @Autowired
     private QuestionMapper questionMapper;
+    @Autowired
+    private NotificationMapper notificationMapper;
 
     //获取所有问题列表
     public DTOPagination getALLList(Integer page, Integer size) {
@@ -43,7 +45,7 @@ public class QuestionService {
             dtoQuestionList.add(dtoQuestion);
         }
 
-        dtoPagination.setQuestionList(dtoQuestionList);
+        dtoPagination.setTList(dtoQuestionList);
 
         return dtoPagination;
     }
@@ -53,21 +55,22 @@ public class QuestionService {
         List<DTOQuestion> dtoQuestionList = new ArrayList<>();
         DTOPagination dtoPagination = new DTOPagination();
         Integer total = questionMapper.count();  //问题总数
+        Integer proTotal = questionMapper.getQuestionCountByUser(accountId);  //个人问题总数
         Integer offset = dtoPagination.setPagination(total, page, size);
 
         List<Question> questionList = questionMapper.getUserQuestionLists(accountId,offset,size);
 
         for (Question question : questionList) {
             User user = userMapper.getByaccountId(question.getCreator());
-            if(user!= null){
-                DTOQuestion dtoQuestion = new DTOQuestion();
-                BeanUtils.copyProperties(question,dtoQuestion);
+            DTOQuestion dtoQuestion = new DTOQuestion();
+            BeanUtils.copyProperties(question,dtoQuestion);
+            dtoQuestion.setQuestionCount(proTotal);
+            if(user!= null)
                 dtoQuestion.setUser(user);
-                dtoQuestionList.add(dtoQuestion);
-            }
+            dtoQuestionList.add(dtoQuestion);
         }
 
-        dtoPagination.setQuestionList(dtoQuestionList);
+        dtoPagination.setTList(dtoQuestionList);
 
         return dtoPagination;
     }
@@ -125,5 +128,10 @@ public class QuestionService {
             return dtoQuestion;
         }).collect(Collectors.toList());
         return dtoQuestionList;
+    }
+
+    public Integer getquestionCount(String accountId) {
+        Integer count = questionMapper.getQuestionCountByUser(accountId);
+        return count;
     }
 }

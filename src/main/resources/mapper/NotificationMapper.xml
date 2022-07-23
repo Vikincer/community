@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.vikinc.community.mapper.NotificationMapper">
+
+
+    <insert id="insert" parameterType="org.vikinc.community.dto.Notification">
+        INSERT INTO notification
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="notifier != null">notifier,</if>
+            <if test="receiver != null">receiver,</if>
+            <if test="outerId != null">outerId,</if>
+            <if test="type != null">type,</if>
+            <if test="gmtCreate != null">gmt_create,</if>
+            <if test="status != null">status,</if>
+            <if test="outerTitle != null">outerTitle,</if>
+            <if test="notifierName != null">notifierName,</if>
+        </trim>
+        <trim prefix="value (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="notifier != null">#{notifier},</if>
+            <if test="receiver != null">#{receiver},</if>
+            <if test="outerId != null">#{outerId},</if>
+            <if test="type != null">#{type},</if>
+            <if test="gmtCreate != null">#{gmtCreate},</if>
+            <if test="status != null">#{status},</if>
+            <if test="outerTitle != null">#{outerTitle},</if>
+            <if test="notifierName != null">#{notifierName},</if>
+        </trim>
+    </insert>
+
+    <select id="getRepiesCount" resultType="Integer">
+        SELECT COUNT(*) FROM notification WHERE receiver = #{accountId}
+    </select>
+
+    <select id="count" resultType="Integer">
+        SELECT COUNT(*) FROM notification
+    </select>
+
+    <select id="getUserNotificationLists" resultType="org.vikinc.community.dto.Notification">
+        SELECT * FROM notification WHERE receiver = #{accountId} ORDER BY gmt_create DESC LIMIT #{offset},#{size}
+    </select>
+
+</mapper>
