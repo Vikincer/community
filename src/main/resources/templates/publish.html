@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
   <link rel="stylesheet" href="/css/community-publish.css">
   <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+  <script src="/js/community-publish.js" type="application/javascript"></script>
 
 
 </head>
@@ -34,9 +35,30 @@
           <textarea name="description" id="description" class="form-control" th:text="${description}" cols="30" rows="10"></textarea>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" id="select-tag" tabindex="0contenteditable=true">
           <label for="tag">添加标签</label>
-          <input type="text" class="form-control" id="tag" name="tag" th:value="${tag}" placeholder="输入标签，以，号分离">
+          <input type="text" class="form-control" autocomplete="off" id="tag" name="tag" th:value="${tag}" placeholder="输入标签，以，号分离">
+          <div class="publish-tag-tab"  >
+
+            <ul class="nav nav-tabs" role="tablist">
+              <li role="presentation" th:each="selectCategory: ${tags}"><a
+                      th:href="${'#' + selectCategory.categoryName}"
+                      aria-controls="home" role="tab" data-toggle="tab"
+                      th:text="${selectCategory.categoryName}"></a></li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content">
+              <div role="tabpanel" class="tab-pane" th:id="${selectCategory.categoryName}" th:each="selectCategory: ${tags}">
+                    <span class="label-info label" style="margin-right: 5px" th:each="selectTag: ${selectCategory.tags}">
+                      <span class="glyphicon glyphicon-tag"
+                            onclick="selectTag(this)" th:data-tag="${selectTag}"
+                            th:text="${selectTag}">
+                      </span>
+                    </span>
+              </div>
+            </div>
+
+          </div>
         </div>
             <div class="alert alert-danger col-lg-9 col-md-12 col-sm-12 col-xs-12" style="text-align: center"
                  th:if = "${error != null}" th:text="${error}"></div>

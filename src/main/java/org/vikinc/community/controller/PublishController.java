@@ -1,6 +1,7 @@
 package org.vikinc.community.controller;
 
 import jdk.nashorn.internal.runtime.logging.Logger;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.vikinc.community.cache.TagCache;
 import org.vikinc.community.dto.DTOQuestion;
 import org.vikinc.community.dto.Question;
 import org.vikinc.community.dto.User;
@@ -32,7 +34,8 @@ public class PublishController {
 
     //发布
     @GetMapping("/publish")
-    public String publish (){
+    public String publish (Model model){
+        model.addAttribute("tags", TagCache.get());
         return "publish";
     }
 
@@ -57,6 +60,11 @@ public class PublishController {
         }
         if(description == "" || title == description){
             model.addAttribute("error","问题补充不能为空");
+            return "/publish";
+        }
+        String invalid = TagCache.filterInvalid(tag);
+        if(StringUtils.isNotBlank(invalid)){
+            model.addAttribute("error","输入非法标签：" + invalid);
             return "/publish";
         }
 
