@@ -18,4 +18,7 @@ public interface NotificationMapper {
 
     List<Notification> getUserNotificationLists(@Param("accountId") String accountId, @Param("offset") Integer offset, @Param("size") Integer size);
 
+    Notification getNotificationByID(int id);
+
+    void updateByID(Notification notification);
 }

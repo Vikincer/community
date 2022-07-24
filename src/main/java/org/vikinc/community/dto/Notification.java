@@ -7,8 +7,8 @@ public class Notification {
     private int id;
     private String notifier;
     private String receiver;
-    private int outerId;
-    private int type;
+    private Integer outerId;
+    private String type;
     private Long gmtCreate;
     private int status;
     private String notifierName;

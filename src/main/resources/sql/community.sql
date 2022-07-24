@@ -11,11 +11,45 @@
  Target Server Version : 80029
  File Encoding         : 65001
 
- Date: 16/07/2022 14:19:15
+ Date: 24/07/2022 17:53:25
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for comment
+-- ----------------------------
+DROP TABLE IF EXISTS `comment`;
+CREATE TABLE `comment`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `parent_id` int NULL DEFAULT NULL,
+  `type` int NULL DEFAULT NULL,
+  `commentator` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `content` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `gmt_create` bigint NULL DEFAULT NULL,
+  `gmt_modified` bigint NULL DEFAULT NULL,
+  `like_count` bigint NULL DEFAULT NULL,
+  `target_id` int NULL DEFAULT NULL COMMENT '二级评论对象',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 23 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for notification
+-- ----------------------------
+DROP TABLE IF EXISTS `notification`;
+CREATE TABLE `notification`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `notifier` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '发送人',
+  `receiver` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '接收人',
+  `outerId` bigint NULL DEFAULT NULL,
+  `type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `gmt_create` bigint NULL DEFAULT NULL,
+  `status` int NULL DEFAULT 0,
+  `notifierName` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `outerTitle` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for question
@@ -33,15 +67,7 @@ CREATE TABLE `question`  (
   `view_count` int NOT NULL DEFAULT 0,
   `tag` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of question
--- ----------------------------
-INSERT INTO `question` VALUES (3, '标题', '内容', 1657879865984, 1657879865984, '0', 0, 0, 0, '标签');
-INSERT INTO `question` VALUES (4, '标题1', '内容1', 1657942043422, 1657942043422, NULL, 0, 0, 0, '标签1,标签2');
-INSERT INTO `question` VALUES (5, '标题2', '内容2', 1657942224516, 1657942224516, NULL, 0, 0, 0, '标签1，标签2');
-INSERT INTO `question` VALUES (7, '问题', 'sad', 1657945287973, 1657945287973, '73332369', 0, 0, 0, '213');
+) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for user
@@ -56,42 +82,6 @@ CREATE TABLE `user`  (
   `gmt_modified` bigint NULL DEFAULT NULL,
   `avatar_url` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
-
-DROP TABLE IF EXISTS `comment`;
-CREATE TABLE `community`.`comment`  (
-                                         `id` bigint NOT NULL,
-                                         `parent_id` bigint NULL,
-                                         `type` int NULL,
-                                         `commentator` varchar(255) NULL,
-                                         `content` varchar(255) NULL,
-                                         `gmt_create` bigint NULL,
-                                         `gmt_modified` bigint NULL,
-                                         `like_count` bigint NULL,
-                                         PRIMARY KEY (`id`)
-);
-
--- ----------------------------
--- Records of user
--- ----------------------------
-INSERT INTO `user` VALUES (7, 'Vikincer', '73332369', 'e6298725-b641-47e5-8f23-2f506227043d', 1657901078158, 1657901078158, 'https://avatars.githubusercontent.com/u/73332369?v=4');
+) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;
-
-ALTER TABLE `community`.`comment`
-    ADD COLUMN `target_id` int NULL COMMENT '二级评论对象' AFTER `like_count`;
-
-CREATE TABLE `community`.`notification`  (
-                                         `id` int NOT NULL,
-                                         `notifier` varchar(255) NULL COMMENT '发送人',
-                                         `receiver` varchar(255) NULL COMMENT '接收人',
-                                         `outerId` bigint NULL,
-                                         `type` int NULL,
-                                         `gmt_create` bigint NULL,
-                                         `status` int NULL DEFAULT 0,
-                                         PRIMARY KEY (`id`)
-);
-
-ALTER TABLE `community`.`notification`
-    ADD COLUMN `notifierName` varchar(255) NULL AFTER `status`,
-ADD COLUMN `outerTitle` varchar(255) NULL AFTER `notifierName`;

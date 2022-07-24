@@ -34,6 +34,8 @@ public class DTOPagination<T> {
             page = 1;
         if(page > totalPage)
             page = totalPage;
+        if(totalPage == 0)
+            return 1;
         pages.add(page);                //设置页码
         for (int i = 1; i<=3; i++){
             if(page-i >0)

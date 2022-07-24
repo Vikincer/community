@@ -31,8 +31,12 @@
         </trim>
     </insert>
 
+    <select id="getNotificationByID" parameterType="int" resultType="org.vikinc.community.dto.Notification">
+        SELECT * FROM notification WHERE id = #{id}
+    </select>
+
     <select id="getRepiesCount" resultType="Integer">
-        SELECT COUNT(*) FROM notification WHERE receiver = #{accountId}
+        SELECT COUNT(*) FROM notification WHERE receiver = #{accountId} AND status = 0
     </select>
 
     <select id="count" resultType="Integer">
@@ -40,7 +44,14 @@
     </select>
 
     <select id="getUserNotificationLists" resultType="org.vikinc.community.dto.Notification">
-        SELECT * FROM notification WHERE receiver = #{accountId} ORDER BY gmt_create DESC LIMIT #{offset},#{size}
+        SELECT * FROM notification WHERE receiver = #{accountId}
+        ORDER BY gmt_create DESC
+            LIMIT #{offset},#{size}
     </select>
+
+    <update id="updateByID" parameterType="org.vikinc.community.dto.Notification">
+        UPDATE notification SET status = 1 WHERE id = #{id} AND receiver = #{receiver}
+    </update>
+
 
 </mapper>
