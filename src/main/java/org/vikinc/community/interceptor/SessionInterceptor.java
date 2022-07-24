@@ -6,6 +6,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import org.vikinc.community.dto.User;
 import org.vikinc.community.mapper.UserMapper;
+import org.vikinc.community.service.NotificationService;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,9 @@ public class SessionInterceptor implements HandlerInterceptor {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private NotificationService notificationService;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //验证登录是否成功
@@ -26,8 +30,11 @@ public class SessionInterceptor implements HandlerInterceptor {
                 if(cookie.getName().equals("token")){
                     String token = cookie.getValue();
                     User user = userMapper.getByToken(token);
-                    if(user!= null )
+                    if(user!= null ){
                         request.getSession().setAttribute("user",user);
+                        Integer repiesCount = notificationService.getRepiesCount(user.getAccountId());
+                        request.getSession().setAttribute("repiesCount",repiesCount);
+                    }
                     break;
                 }
             }

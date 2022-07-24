@@ -7,8 +7,10 @@
   <link rel="stylesheet" href="/css/bootstrap.min.css">
   <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
   <link rel="stylesheet" href="/css/community-publish.css">
+  <link rel="stylesheet" href="/css/editormd.min.css">
   <script src="/js/bootstrap.min.js" type="application/javascript"></script>
   <script src="/js/community-publish.js" type="application/javascript"></script>
+  <script src="/js/editormd.min.js" type="application/javascript"></script>
 
 
 </head>
@@ -25,15 +27,27 @@
 
       <form action="/publish" method="post">
         <input type="hidden" name="id" th:value="${id}">
-        <div class="form-group">
+        <div class="form-group" >
           <label for="title">问题标题 简单摘要</label>
-          <input class="form-control" id="title" name="title" th:value="${title}" placeholder="问题标题....">
+          <input class="form-control" id="title"  name="title" th:value="${title}" placeholder="问题标题....">
+        </div>
+        <div class="form-group" id="test-editor">
+          <label for="description">问题补充 必填，请参照右侧提示</label>
+          <textarea style="display: none" name="description" id="description" class="form-control" th:text="${description}" cols="30" rows="10"></textarea>
         </div>
 
-        <div class="form-group">
-          <label for="description">问题补充 必填，请参照右侧提示</label>
-          <textarea name="description" id="description" class="form-control" th:text="${description}" cols="30" rows="10"></textarea>
-        </div>
+        <script type="text/javascript">
+          $(function(){
+            var editor = editormd("test-editor",{
+              width: "100%",
+              height: 350,
+              path:  "/js/lib/",
+              delay: 0,
+              watch: false,
+              placeholder: "请输入问题描述"
+            });
+          });
+        </script>
 
         <div class="form-group " id="select-tag" tabindex="0contenteditable=true">
           <label for="tag">添加标签</label>

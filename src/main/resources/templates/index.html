@@ -34,14 +34,14 @@
                 <div class="media-left">
                     <a href="#">
                         <img class="media-object img-rounded"
-                             th:src="${question.user} == null ? '/img/error.jpg' : ${question.user.avatarUrl}">
+                             th:src="${question.user} == null ? '/images/error.jpg' : ${question.user.avatarUrl}">
                     </a>
                 </div>
                 <div class="media-body">
                     <h4 class="media-heading"/>
                         <a th:href="@{'/question/' + ${question.id}}" th:text="${question.title}"></a>
                     </h4>
-                    <span th:text="${question.description}"></span><br>
+<!--                    <span th:text="${question.description}"></span>--><br>
                     <span class="media-media-body-span-text">
                         <span th:text="${question.commentCount}"></span> 个回复&nbsp&nbsp
                         • <span th:text="${question.viewCount}"></span> 次浏览&nbsp&nbsp
