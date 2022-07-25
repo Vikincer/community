@@ -64,4 +64,50 @@
     <select id="getTagRelated" parameterType="org.vikinc.community.dto.Question" resultType="org.vikinc.community.dto.Question">
         SELECT * FROM question WHERE id != #{id} AND tag REGEXP #{tag}
     </select>
+
+    <select id="countBySerch" parameterType="org.vikinc.community.dto.DTOQuestionQuery" resultType="Integer">
+        SELECT count(*) FROM question
+        <where>
+            <if test="serch != null and serch != ''">
+                title REGEXP #{serch}
+            </if>
+        </where>
+    </select>
+
+    <select id="getALLListBySerch" parameterType="org.vikinc.community.dto.DTOQuestionQuery" resultType="org.vikinc.community.dto.Question">
+        SELECT * FROM question
+        <where>
+            <if test="serch != null and serch != ''">
+                title REGEXP #{serch}
+            </if>
+        </where>
+        ORDER BY gmt_create DESC
+        LIMIT #{page},#{size}
+    </select>
+
+    <select id="countProBySerch" parameterType="org.vikinc.community.dto.DTOQuestionQuery" resultType="Integer">
+        SELECT count(*) FROM question
+        <where>
+            <if test="serch != null and serch != ''">
+                AND title REGEXP #{serch}
+            </if>
+            <if test="accountId != null">
+                AND creator = #{accountId}
+            </if>
+        </where>
+    </select>
+
+    <select id="getUserQuestionListsBySerch" parameterType="org.vikinc.community.dto.DTOQuestionQuery" resultType="org.vikinc.community.dto.Question">
+        SELECT * FROM question
+        <where>
+            <if test="serch != null and serch != ''">
+                title REGEXP #{serch}
+            </if>
+            <if test="accountId != null">
+                AND creator = #{accountId}
+            </if>
+        </where>
+        ORDER BY gmt_create DESC
+        LIMIT #{page},#{size}
+    </select>
 </mapper>

@@ -4,6 +4,7 @@ import jdk.internal.org.objectweb.asm.tree.analysis.Value;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.vikinc.community.dto.DTOQuestion;
+import org.vikinc.community.dto.DTOQuestionQuery;
 import org.vikinc.community.dto.Question;
 
 import java.util.List;
@@ -30,4 +31,12 @@ public interface QuestionMapper {
     List<Question> getTagRelated(Question question);
 
     Integer getQuestionCountByUser(String accountId);
+
+    Integer countBySerch(DTOQuestionQuery dtoQuestionQuery);
+
+    List<Question> getALLListBySerch(DTOQuestionQuery dtoQuestionQuery);
+
+    Integer countProBySerch(DTOQuestionQuery dtoQuestionQuery);
+
+    List<Question> getUserQuestionListsBySerch(DTOQuestionQuery dtoQuestionQuery);
 }

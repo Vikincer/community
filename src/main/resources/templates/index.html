@@ -58,22 +58,22 @@
                         </a>
                     </li>
                     <li th:if="${dtoPaginations.showPrevious}">
-                        <a th:href="@{/(page=${dtoPaginations.page - 1})}" aria-label="Previous">
+                        <a th:href="@{ /( page=${dtoPaginations.page - 1},serch=${serch} ) }" aria-label="Previous">
                             <span aria-hidden="true">&lt;</span>
                         </a>
                     </li>
 
                     <li th:each="page : ${dtoPaginations.pages}" th:class="${dtoPaginations.page == page}? 'active' : '' ">
-                        <a th:href="@{/(page=${page})}" th:text="${page}"></a>
+                        <a th:href="@{/( page=${page}, serch=${serch} )}" th:text="${page}"></a>
                     </li>
 
                     <li th:if="${dtoPaginations.showNext}">
-                        <a th:href="@{/(page=${dtoPaginations.page + 1})}" aria-label="Previous">
+                        <a th:href="@{/( page=${dtoPaginations.page + 1},serch=${serch} )}" aria-label="Previous">
                             <span aria-hidden="true">&gt;</span>
                         </a>
                     </li>
                     <li th:if="${dtoPaginations.showEndPage}">
-                        <a th:href="@{/(page=${dtoPaginations.totalPage})}" aria-label="Previous">
+                        <a th:href="@{/(page=${dtoPaginations.totalPage},serch=${serch} )}" aria-label="Previous">
                             <span aria-hidden="true">&gt;&gt;</span>
                         </a>
                     </li>

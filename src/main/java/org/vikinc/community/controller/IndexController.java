@@ -34,11 +34,12 @@ public class IndexController {
     @GetMapping("/")
     public String index(HttpServletRequest request, Model model,
                         @RequestParam(name = "page",defaultValue = "1") Integer page,
-                        @RequestParam(name = "size",defaultValue = "5") Integer size){
+                        @RequestParam(name = "size",defaultValue = "5") Integer size,
+                        @RequestParam(name = "serch",required = false) String serch){
 
-        DTOPagination dtoPaginations = questionService.getALLList(page,size);
+        DTOPagination dtoPaginations = questionService.getALLList(serch,page,size);
         model.addAttribute("dtoPaginations",dtoPaginations);
-
+        model.addAttribute("serch",serch);
         return "index";
     }
 }

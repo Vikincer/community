@@ -27,13 +27,20 @@ public class QuestionService {
     private NotificationMapper notificationMapper;
 
     //获取所有问题列表
-    public DTOPagination getALLList(Integer page, Integer size) {
+    public DTOPagination getALLList(String serch,Integer page, Integer size) {
+        serch = getSerch(serch);
+
         List<DTOQuestion> dtoQuestionList = new ArrayList<>();
         DTOPagination dtoPagination = new DTOPagination();
-        Integer total = questionMapper.count();  //问题总数
-        Integer offset = dtoPagination.setPagination(total, page, size);
 
-        List<Question> questionList = questionMapper.getALLList(offset,size);
+        DTOQuestionQuery dtoQuestionQuery = new DTOQuestionQuery();
+        dtoQuestionQuery.setSerch(serch);
+        Integer total = questionMapper.countBySerch(dtoQuestionQuery);//问题总数
+
+        Integer offset = dtoPagination.setPagination(total, page, size);
+        dtoQuestionQuery.setPage(offset);
+        dtoQuestionQuery.setSize(size);
+        List<Question> questionList = questionMapper.getALLListBySerch(dtoQuestionQuery);
 
         for (Question question : questionList) {
             User user = userMapper.getByaccountId(question.getCreator());
@@ -50,15 +57,22 @@ public class QuestionService {
         return dtoPagination;
     }
 
-//获取当前用户发布的所有问题列表
-    public DTOPagination getUserQuestionList(String accountId, Integer page, Integer size) {
+    //获取当前用户发布的所有问题列表
+    public DTOPagination getUserQuestionList(String serch,String accountId, Integer page, Integer size) {
+        serch = getSerch(serch);
+
         List<DTOQuestion> dtoQuestionList = new ArrayList<>();
         DTOPagination dtoPagination = new DTOPagination();
-        Integer total = questionMapper.count();  //问题总数
-        Integer proTotal = questionMapper.getQuestionCountByUser(accountId);  //个人问题总数
-        Integer offset = dtoPagination.setPagination(total, page, size);
 
-        List<Question> questionList = questionMapper.getUserQuestionLists(accountId,offset,size);
+        DTOQuestionQuery dtoQuestionQuery = new DTOQuestionQuery();
+        dtoQuestionQuery.setSerch(serch);
+        dtoQuestionQuery.setAccountId(accountId);
+        Integer proTotal = questionMapper.countProBySerch(dtoQuestionQuery);//个人问题总数
+        Integer offset = dtoPagination.setPagination(proTotal, page, size);
+
+        dtoQuestionQuery.setPage(offset);
+        dtoQuestionQuery.setSize(size);
+        List<Question> questionList = questionMapper.getUserQuestionListsBySerch(dtoQuestionQuery);
 
         for (Question question : questionList) {
             User user = userMapper.getByaccountId(question.getCreator());
@@ -74,6 +88,15 @@ public class QuestionService {
 
         return dtoPagination;
     }
+
+    private String getSerch(String serch) {
+        if(StringUtils.isNotBlank(serch)){
+            String[] tags = StringUtils.split(serch, " ");
+            return Arrays.stream(tags).collect(Collectors.joining("|"));
+        }
+        return "";
+    }
+
     //获取question详情页
     public DTOQuestion getQuestionByID(Integer id) {
         DTOQuestion dtoQuestion = new DTOQuestion();

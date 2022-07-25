@@ -31,7 +31,7 @@
                 </div>
                 <div class="media-body">
                     <h4 class="media-heading" th:text="${question.title}"></h4>
-                    <span th:text="${question.description}"></span><br>
+<!--                    <span th:text="${question.description}"></span><br>-->
                     <span class="media-media-body-span-text">
                         <span th:text="${question.commentCount}"></span> 个回复&nbsp&nbsp
                         • <span th:text="${question.viewCount}"></span> 次浏览&nbsp&nbsp
@@ -62,22 +62,22 @@
                         </a>
                     </li>
                     <li th:if="${dtoPagination.showPrevious}">
-                        <a th:href="@{/profile(page=${dtoPagination.page - 1})}" aria-label="Previous">
+                        <a th:href="@{/profile(page=${dtoPagination.page - 1},serch=${serch})}" aria-label="Previous">
                             <span aria-hidden="true">&lt;</span>
                         </a>
                     </li>
 
                     <li th:each="page : ${dtoPagination.pages}" th:class="${dtoPagination.page == page}? 'active' : '' ">
-                        <a th:href="@{/profile(page=${page})}" th:text="${page}"></a>
+                        <a th:href="@{/profile(page=${page},serch=${serch})}" th:text="${page}"></a>
                     </li>
 
                     <li th:if="${dtoPagination.showNext}">
-                        <a th:href="@{/profile(page=${dtoPagination.page + 1})}" aria-label="Previous">
+                        <a th:href="@{/profile(page=${dtoPagination.page + 1},serch=${serch})}" aria-label="Previous">
                             <span aria-hidden="true">&gt;</span>
                         </a>
                     </li>
                     <li th:if="${dtoPagination.showEndPage}">
-                        <a th:href="@{/profile(page=${dtoPagination.totalPage})}" aria-label="Previous">
+                        <a th:href="@{/profile(page=${dtoPagination.totalPage},serch=${serch})}" aria-label="Previous">
                             <span aria-hidden="true">&gt;&gt;</span>
                         </a>
                     </li>
